@@ -1,14 +1,14 @@
 tool
 extends EditorScript
 
+# == User constants ============================================================
 const TR_FILE_PATH := "res://translations.csv"
 const CSV_DELIM := ","
-const CLEAN_NOT_FOUND := false
+const CLEAN_NOT_FOUND_KEYS := false
 const SKIP_DIRS := ["res://addons"]
 const NUM_BACKUP_FILES := 5
 
-const TEXT_TR_PROPS := ["text", "hint_tooltip", "placeholder_text", "bbcode_text",
-		"dialog_text"]
+# == Script constants ==========================================================
 const TEXT_CLASSES := ["Button", "CheckButton", "OptionButton", "LinkButton", "Label",
 		"LineEdit", "RichTextLabel", "TextEdit"]
 const DIALOG_CLASSES := ["AcceptDialog", "ConfirmationDialog", "FileDialog"]
@@ -65,7 +65,7 @@ func save_translation_file() -> void:
 		var add := true
 		if not keys.has(key):
 			not_found.push_back(key)
-			add = not CLEAN_NOT_FOUND
+			add = not CLEAN_NOT_FOUND_KEYS
 		if add:
 			keys[key] = locales_dict[key]
 	var keys_arr := keys.keys()
