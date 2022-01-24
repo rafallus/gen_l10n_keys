@@ -5,6 +5,7 @@ const TR_FILE_PATH := "res://translations.csv"
 const CSV_DELIM := ","
 const CLEAN_NOT_FOUND := false
 const SKIP_DIRS := ["res://addons"]
+const NUM_BACKUP_FILES := 5
 
 const TEXT_TR_PROPS := ["text", "hint_tooltip", "placeholder_text", "bbcode_text",
 		"dialog_text"]
@@ -31,6 +32,7 @@ func _run() -> void:
 func read_translation_file() -> void:
 	var file := File.new()
 	if file.file_exists(TR_FILE_PATH):
+		make_backup(TR_FILE_PATH)
 		var e := file.open(TR_FILE_PATH, File.READ)
 		assert(e == OK, "Can't open translation file")
 		locales = file.get_csv_line(CSV_DELIM)
@@ -88,6 +90,18 @@ func save_translation_file() -> void:
 		for s in not_found:
 			print("- %s" % s)
 	print("Total strings: %d" % keys.size())
+
+
+func make_backup(fname: String) -> void:
+	var dir := Directory.new()
+	for i in range(NUM_BACKUP_FILES - 1, 0, -1):
+		var from := fname + '.bak' + String(i)
+		if dir.file_exists(from):
+			var to := fname + '.bak' + String(i + 1)
+			var e := dir.copy(from, to)
+			assert(e == OK, "Can't make backup file")
+	var e := dir.copy(fname, fname + '.bak1')
+	assert(e == OK, "Can't make backup file")
 
 
 func scan_dir(path: String) -> void:
