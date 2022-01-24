@@ -9,6 +9,9 @@ const NUM_BACKUP_FILES := 5
 
 const TEXT_TR_PROPS := ["text", "hint_tooltip", "placeholder_text", "bbcode_text",
 		"dialog_text"]
+const TEXT_CLASSES := ["Button", "CheckButton", "OptionButton", "LinkButton", "Label",
+		"LineEdit", "RichTextLabel", "TextEdit"]
+const DIALOG_CLASSES := ["AcceptDialog", "ConfirmationDialog", "FileDialog"]
 const ITEMS_CLASSES := ["PopupMenu", "OptionButton", "ItemList"]
 const ITEMS_INDEX := [10, 5, 3]
 const WINDOW_CLASSES := ["WindowDialog", "AcceptDialog", "ConfirmationDialog", "FileDialog"]
@@ -166,7 +169,6 @@ func process_scene(path: String) -> void:
 		var nprops := nodes[index + 5]
 		var node_path: String = ""
 		var type := "" if instance != -1 else names[itype]
-		var is_control := control_classes.has(type)
 		if node_paths.size() > 0:
 			if ni != 0:
 				node_path = node_paths[ni - 1]
@@ -180,7 +182,11 @@ func process_scene(path: String) -> void:
 		for i in nprops:
 			var iprop := nodes[index]
 			var prop := names[iprop]
-			if is_control and TEXT_TR_PROPS.has(prop):
+			if prop == "hint_tooltip" and control_classes.has(type) or \
+					prop == "text" and TEXT_CLASSES.has(type) or \
+					prop == "placeholder_text" and type == "LineEdit" or \
+					prop == "bbcode_text" and type == "RichTextLabel" or \
+					prop == "dialog_text" and DIALOG_CLASSES.has(type):
 				var text: String = variants[nodes[index + 1]]
 				if text != "":
 					strings.push_back(text)
