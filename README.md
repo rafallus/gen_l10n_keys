@@ -11,7 +11,7 @@ Copy the script into your project (the location is not important). Open the scri
 Strings used as argument in the `tr()` function are considered as translatable strings. The following examples show in which cases the string is a valid localization key.
 ```gdscript
 label.text = tr("Some string")            # Valid
-label.text = my_object.tr("Other string")  # Valid
+label.text = my_object.tr("Other string") # Valid
 label.text = "1. "+tr("Point one string") # Valid
 label.text = str("A different string")    # Not included as key
 my_func(arg1, tr("My string"))            # Valid
